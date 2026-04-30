@@ -62,7 +62,14 @@ export default function CitizenLoginPage() {
       authLogin(data.user);
 
       // Redirect citizen to the report page after successful authentication
-      router.push("/report");
+      // Redirect based on user role after successful login
+if (data.user.role === "admin") {
+  router.push("/admin");
+} else if (data.user.role === "responder") {
+  router.push("/responder");
+} else {
+  router.push("/report");
+}
     } catch (err: unknown) {
       // Display the error message from the server
       if (err instanceof Error) {

@@ -72,7 +72,7 @@ export default function AlertSystem() {
               >
                 {/* Emoji icon in a red-tinted rounded square */}
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
+                  className="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0"
                   style={{ background: "var(--red-dim)" }}
                 >
                   {ch.emoji}
@@ -92,7 +92,7 @@ export default function AlertSystem() {
 
                 {/* Green dot indicating the channel is live and operational */}
                 <div
-                  className="w-2 h-2 rounded-full flex-shrink-0"
+                  className="w-2 h-2 rounded-full shrink-0"
                   style={{
                     background: "var(--green)",
                     boxShadow: "0 0 6px var(--green)",

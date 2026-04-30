@@ -1,38 +1,35 @@
-// Import the Metadata type from Next.js for defining page-level SEO tags
+// Import the Metadata type from Next.js for defining page meta tags
 import type { Metadata } from "next";
 
-// Import the global CSS file using the correct relative path with "./"
+// Import the global CSS file that sets CSS variables and Tailwind base styles
 import "./globals.css";
-
-// Import the AuthProvider so every page in the app has access to auth state
 import { AuthProvider } from "@/context/AuthContext";
 
-// metadata is exported so Next.js injects the correct title and description tags
+// metadata is exported so Next.js can inject the correct <title> and <meta> tags
 export const metadata: Metadata = {
-  // Browser tab title shown in all pages of the platform
+  // Browser tab title and SEO title for the platform
   title: "CERP — Community Emergency Reporting Platform",
-  // Meta description for search engines and social media previews
+  // Meta description used by search engines and social sharing previews
   description:
     "Report floods, fires and road accidents in Kasoa. Connect community members to first responders fast.",
 };
 
-// RootLayout wraps every page in the application with the shared HTML structure
+// RootLayout wraps every page in the application with the shared HTML shell
 export default function RootLayout({
-  // children represents the content of whichever page is currently rendered
+  // children represents the content of whichever page is currently being rendered
   children,
 }: {
-  // TypeScript type for the children prop
+  // TypeScript type for the children prop — any valid React content
   children: React.ReactNode;
 }) {
   return (
-    // Set the document language to English for accessibility and SEO
+    // Set the page language to English for accessibility and SEO
     <html lang="en">
-      <body>
-        {/* AuthProvider gives every page access to the logged-in user's state */}
-        <AuthProvider>
-          {children}
-        </AuthProvider>
-      </body>
-    </html>
+  <body>
+    <AuthProvider>
+      {children}
+    </AuthProvider>
+  </body>
+</html>
   );
 }

@@ -7,53 +7,26 @@ import AlertSystem from "@/components/sections/AlertSystem";
 // Import the shared Footer component
 import Footer from "@/components/layout/Footer";
 // Import React hooks for managing form and UI state
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // Import the Kasoa towns list for the target town dropdown
 import { KASOA_TOWNS } from "@/lib/data";
 // Import the createAlert API function to submit alerts to the backend
-import { createAlert } from "@/lib/api";
+import { createAlert, getAlerts } from "@/lib/api";
+import { useAuth } from "@/context/AuthContext";
+import type { Alert } from "@/lib/api";
 
 // ALERT_HISTORY is sample data for recent broadcasts — in production this comes from the database
-const ALERT_HISTORY = [
-  {
-    // Unique ID for this alert record
-    id: "ALT-001",
-    // Short title displayed in the history list
-    title: "Flash Flood Warning — Millennium City",
-    // Kasoa town targeted by this alert
-    region: "Millennium City",
-    // Geo-fence radius applied to this alert
-    radius: "5 km",
-    // Which delivery channels were used
-    channels: ["SMS", "Push", "Web"],
-    // When the alert was broadcast
-    issuedAt: "Today, 09:14",
-    // Current status of the alert
-    status: "active",
-  },
-  {
-    id: "ALT-002",
-    title: "Fire Evacuation — Lamptey Mills",
-    region: "Lamptey Mills",
-    radius: "3 km",
-    channels: ["SMS", "Push"],
-    issuedAt: "Today, 07:40",
-    status: "active",
-  },
-  {
-    id: "ALT-003",
-    title: "Road Closure — Kasoa-Winneba Road",
-    region: "Ofaakor",
-    radius: "2 km",
-    channels: ["Web"],
-    issuedAt: "Yesterday, 22:05",
-    status: "expired",
-  },
-];
+const [alertHistory, setAlertHistory] = useState<Alert[]>([]);
+
+useEffect(() => {
+  getAlerts({ limit: 20 }).then((data) => setAlertHistory(data.alerts));
+}, []);
 
 // AlertsPage renders at the "/alerts" route
 // It provides a full alert composer for admins and a history of recent broadcasts
 export default function AlertsPage() {
+  //To restrict the compose form to admins only
+  const { user } = useAuth();
   // title holds the text typed into the alert title field
   const [title, setTitle] = useState("");
   // message holds the full text of the alert message
@@ -173,6 +146,7 @@ export default function AlertsPage() {
           style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
         >
           {/* ── Compose Form ── */}
+          {user?.role === "admin" && (
           <div>
             {/* Sub-section heading */}
             <h2
@@ -301,6 +275,7 @@ export default function AlertsPage() {
               {loading ? "Sending…" : sent ? "✅ Alert Sent!" : "🚨 Send Alert Now"}
             </button>
           </div>
+          )}
 
           {/* ── Live Preview ── */}
           <div>
@@ -346,7 +321,8 @@ export default function AlertsPage() {
                 {message || "Your message body will appear here once you start typing above."}
               </p>
 
-              {/* Alert metadata showing target area, radius, and selected channels */}
+              {/* Alert metadata showing target area, radius, and selected 
+              channels */}
               <p className="text-xs" style={{ color: "var(--text-muted)" }}>
                 Target: {region || "All Kasoa Towns"} · Radius: {radius} km ·
                 Channels: {channels.join(", ") || "None"}
@@ -369,64 +345,43 @@ export default function AlertsPage() {
         {/* List of past alert records */}
         <div className="flex flex-col gap-3">
           {/* Render one row per alert in the history */}
-          {ALERT_HISTORY.map((alert) => (
-            <div
-              key={alert.id}
-              className="rounded-xl px-6 py-5 flex items-center justify-between gap-4 flex-wrap"
-              style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
-            >
-              {/* Left side: alert title and metadata */}
-              <div>
-                {/* Title row with status dot */}
-                <div className="flex items-center gap-2 mb-1">
-                  {/* Green dot for active alerts, grey for expired */}
-                  <span
-                    className="w-1.5 h-1.5 rounded-full"
-                    style={{
-                      background: alert.status === "active" ? "var(--green)" : "var(--text-muted)",
-                      boxShadow: alert.status === "active" ? "0 0 6px var(--green)" : "none",
-                    }}
-                  />
-                  {/* Alert title */}
-                  <span className="text-sm font-semibold">{alert.title}</span>
-                </div>
-
-                {/* Alert metadata: town, radius, and issue time */}
-                <p className="text-xs" style={{ color: "var(--text-muted)" }}>
-                  {alert.region} · {alert.radius} · {alert.issuedAt}
-                </p>
-              </div>
-
-              {/* Right side: channel badges and status badge */}
-              <div className="flex items-center gap-2 flex-wrap">
-                {/* Render a badge for each delivery channel used */}
-                {alert.channels.map((ch) => (
-                  <span
-                    key={ch}
-                    className="text-xs px-2 py-0.5 rounded"
-                    style={{
-                      background: "var(--surface2)",
-                      border: "1px solid var(--border)",
-                      color: "var(--text-muted)",
-                    }}
-                  >
-                    {ch}
-                  </span>
-                ))}
-
-                {/* Status badge — green for active, grey for expired */}
-                <span
-                  className="text-xs font-semibold px-2 py-0.5 rounded ml-2"
-                  style={{
-                    background: alert.status === "active" ? "var(--green-dim)" : "var(--surface2)",
-                    color: alert.status === "active" ? "var(--green)" : "var(--text-muted)",
-                  }}
-                >
-                  {alert.status}
-                </span>
-              </div>
-            </div>
-          ))}
+          {alertHistory.length === 0 ? (
+  <p style={{ color: "var(--text-muted)", fontSize: "14px" }}>
+    No alerts have been broadcast yet.
+  </p>
+) : (
+  alertHistory.map((alert) => (
+    <div
+      key={alert.id}
+      className="rounded-xl px-6 py-5 flex items-center justify-between gap-4 flex-wrap"
+      style={{ background: "var(--surface)", border: "1px solid var(--border)" }}
+    >
+      <div>
+        <div className="flex items-center gap-2 mb-1">
+          <span
+            className="w-1.5 h-1.5 rounded-full"
+            style={{ background: "var(--green)", boxShadow: "0 0 6px var(--green)" }}
+          />
+          <span className="text-sm font-semibold">{alert.title}</span>
+        </div>
+        <p className="text-xs" style={{ color: "var(--text-muted)" }}>
+          {alert.target_region} · {alert.radius_km ? `${alert.radius_km} km` : "No radius"} · {new Date(alert.created_at).toLocaleString()}
+        </p>
+      </div>
+      <div className="flex items-center gap-2 flex-wrap">
+        {alert.channels.map((ch: string) => (
+          <span
+            key={ch}
+            className="text-xs px-2 py-0.5 rounded"
+            style={{ background: "var(--surface2)", border: "1px solid var(--border)", color: "var(--text-muted)" }}
+          >
+            {ch}
+          </span>
+        ))}
+      </div>
+    </div>
+  ))
+)}
         </div>
       </div>
 

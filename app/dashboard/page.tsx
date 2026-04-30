@@ -7,7 +7,9 @@ import Dashboard from "@/components/sections/Dashboard";
 // Import the shared Footer component
 import Footer from "@/components/layout/Footer";
 // Import mock incidents and Kasoa towns for the searchable table
-import { MOCK_INCIDENTS, KASOA_TOWNS } from "@/lib/data";
+import { KASOA_TOWNS } from "@/lib/data";
+import { getIncidents } from "@/lib/api";
+import type { Incident } from "@/lib/api";
 // Import TypeScript types for incident properties
 import type { IncidentType, SeverityLevel } from "@/lib/types";
 // Import React hooks for managing search state
@@ -34,13 +36,17 @@ export default function DashboardPage() {
   const [search, setSearch] = useState("");
 
   // filtered is the subset of incidents whose title or town matches the search text
-  const filtered = MOCK_INCIDENTS.filter(
-    (inc) =>
-      // Case-insensitive match on the incident title
-      inc.title.toLowerCase().includes(search.toLowerCase()) ||
-      // Case-insensitive match on the Kasoa town name
-      inc.region.toLowerCase().includes(search.toLowerCase())
-  );
+  const [incidents, setIncidents] = useState<Incident[]>([]);
+
+useEffect(() => {
+  getIncidents({ limit: 100 }).then((data) => setIncidents(data.incidents));
+}, []);
+
+const filtered = incidents.filter(
+  (inc) =>
+    inc.description?.toLowerCase().includes(search.toLowerCase()) ||
+    inc.region?.toLowerCase().includes(search.toLowerCase())
+);
 
   return (
     // Semantic main element wrapping all page content

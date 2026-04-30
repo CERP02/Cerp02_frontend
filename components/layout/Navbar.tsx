@@ -29,7 +29,7 @@ export default function Navbar() {
         <div className="flex items-center gap-2.5">
           {/* Red square badge containing the emergency icon */}
           <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+            className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
             style={{ background: "var(--red)" }}
           >
             {/* SVG icon representing layered emergency data */}
