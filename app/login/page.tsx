@@ -173,7 +173,9 @@ if (data.user.role === "admin") {
           {/* Admin login link */}
           <p className="text-center text-xs mt-6" style={{ color: "var(--text-muted)" }}>
             Are you an admin?{" "}
-            <Link href="/admin/login" style={{ color: "var(--red)", textDecoration: "none" }}>Admin sign in →</Link>
+            <Link href="/admin/login" style={{ color: "var(--red)", textDecoration: "none" }}>
+              Admin sign in →
+            </Link>
           </p>
         </div>
       </div>

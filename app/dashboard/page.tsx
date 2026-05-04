@@ -13,7 +13,7 @@ import type { Incident } from "@/lib/api";
 // Import TypeScript types for incident properties
 import type { IncidentType, SeverityLevel } from "@/lib/types";
 // Import React hooks for managing search state
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // TYPE_COLOR maps each incident type to its display color for the table badges
 const TYPE_COLOR: Record<IncidentType, string> = {
@@ -89,7 +89,7 @@ const filtered = incidents.filter(
       {/* ── Live Map Component ── */}
       {/* The Dashboard section component renders the map and incident feed */}
       <div className="px-10 max-w-6xl mx-auto">
-        <Dashboard />
+        <Dashboard incidents={[]} />
       </div>
 
       {/* ── Full Incident Table ── */}
@@ -200,7 +200,7 @@ const filtered = incidents.filter(
 
                     {/* Relative time since the incident was reported */}
                     <td className="px-5 py-4 text-xs" style={{ color: "var(--text-muted)" }}>
-                      {inc.createdAt}
+                      {inc.created_at}
                     </td>
                   </tr>
                 ))}
