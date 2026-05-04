@@ -30,10 +30,52 @@ export default function ReportForm() {
   const [submitted, setSubmitted] = useState(false);
   // loading is true while the API request is in progress
   const [loading, setLoading] = useState(false);
-  // error holds any error message returned by the server
+  // loading state while the browser resolves GPS coordinates
+  const [gpsLoading, setGpsLoading] = useState(false);
+  // error holds any error message returned by the server or geolocation API
   const [error, setError] = useState("");
+  // feedback shown after GPS coordinates are captured successfully
+  const [gpsMessage, setGpsMessage] = useState("");
+  // latitude and longitude captured using browser GPS
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [longitude, setLongitude] = useState<number | null>(null);
   // refNum is the unique reference number generated after submission
   const [refNum, setRefNum] = useState("");
+
+  const handleUseGPS = () => {
+    if (typeof navigator === "undefined" || !navigator.geolocation) {
+      setError("Your browser does not support GPS location.");
+      return;
+    }
+
+    setError("");
+    setGpsMessage("");
+    setGpsLoading(true);
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude: lat, longitude: lng } = position.coords;
+        setLatitude(lat);
+        setLongitude(lng);
+        setGpsMessage(`GPS coordinates captured: ${lat.toFixed(4)}, ${lng.toFixed(4)}`);
+        setGpsLoading(false);
+
+        if (!location) {
+          setLocation(`GPS location (${lat.toFixed(4)}, ${lng.toFixed(4)})`);
+        }
+      },
+      (geoError) => {
+        console.error("Geolocation error:", geoError);
+        setError("Unable to retrieve GPS location. Please allow location access or enter the address manually.");
+        setGpsLoading(false);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 15000,
+        maximumAge: 10000,
+      }
+    );
+  };
 
   // handleSubmit is called when the citizen clicks the Submit button
   const handleSubmit = async () => {
@@ -50,7 +92,15 @@ export default function ReportForm() {
 
     try {
       // Call the backend API to create the incident record in the database
-      const data = await createIncident({
+      const payload: {
+        type: string;
+        description: string;
+        location_text: string;
+        region: string;
+        severity?: string;
+        latitude?: number;
+        longitude?: number;
+      } = {
         // The category of emergency selected by the citizen
         type: selectedType,
         // The free-text description of the incident
@@ -61,7 +111,14 @@ export default function ReportForm() {
         region: town,
         // The severity level selected — default to low if not chosen
         severity: severity || "low",
-      });
+      };
+
+      if (latitude !== null && longitude !== null) {
+        payload.latitude = latitude;
+        payload.longitude = longitude;
+      }
+
+      const data = await createIncident(payload);
 
       // Generate a readable reference number from the returned incident ID
       setRefNum(`CE-${data.incident.id.slice(0, 8).toUpperCase()}`);
@@ -240,19 +297,29 @@ export default function ReportForm() {
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
                 />
-                {/* GPS button — in production this triggers browser geolocation */}
+                {/* GPS button — request coordinates from the browser */}
                 <button
+                  type="button"
+                  onClick={handleUseGPS}
+                  disabled={gpsLoading}
                   className="px-4 py-3 rounded-xl text-sm flex items-center gap-1.5 transition-all duration-200"
                   style={{
                     background: "var(--surface2)",
                     border: "1px solid var(--border-mid)",
                     color: "var(--text-secondary)",
                     whiteSpace: "nowrap",
+                    opacity: gpsLoading ? 0.75 : 1,
+                    cursor: gpsLoading ? "not-allowed" : "pointer",
                   }}
                 >
-                  📍 Use GPS
+                  {gpsLoading ? "📍 Locating…" : "📍 Use GPS"}
                 </button>
               </div>
+              {gpsMessage && (
+                <p className="text-sm mt-2" style={{ color: "var(--green)" }}>
+                  {gpsMessage}
+                </p>
+              )}
             </div>
 
             {/* ── Town + Affected Area ── */}
