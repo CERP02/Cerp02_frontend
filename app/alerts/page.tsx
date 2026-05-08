@@ -15,16 +15,15 @@ import { createAlert, getAlerts } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 import type { Alert } from "@/lib/api";
 
-// ALERT_HISTORY is sample data for recent broadcasts — in production this comes from the database
-const [alertHistory, setAlertHistory] = useState<Alert[]>([]);
-
-useEffect(() => {
-  getAlerts({ limit: 20 }).then((data) => setAlertHistory(data.alerts));
-}, []);
-
 // AlertsPage renders at the "/alerts" route
 // It provides a full alert composer for admins and a history of recent broadcasts
 export default function AlertsPage() {
+  // Recent alert history loaded from the backend
+  const [alertHistory, setAlertHistory] = useState<Alert[]>([]);
+
+  useEffect(() => {
+    getAlerts({ limit: 20 }).then((data) => setAlertHistory(data.alerts));
+  }, []);
   //To restrict the compose form to admins only
   const { user } = useAuth();
   // title holds the text typed into the alert title field
