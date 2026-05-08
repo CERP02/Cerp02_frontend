@@ -109,12 +109,12 @@ const filtered = incidents.filter(
               All Incidents
             </h2>
 
-            {/* Search input to filter incidents by title or Kasoa town */}
+            {/* Search input to filter incidents by description or Kasoa town */}
             <input
               type="text"
               className="form-input text-sm"
               style={{ width: "260px" }}
-              placeholder="Search by title or Kasoa town…"
+              placeholder="Search by description or Kasoa town…"
               value={search}
               // Update search state on every keystroke
               onChange={(e) => setSearch(e.target.value)}
@@ -128,7 +128,7 @@ const filtered = incidents.filter(
               <thead>
                 <tr style={{ borderBottom: "1px solid var(--border)" }}>
                   {/* Render each column header */}
-                  {["ID", "Type", "Title", "Kasoa Town", "Severity", "Status", "Reported"].map((h) => (
+                  {['ID', 'Type', 'Location', 'Kasoa Town', 'Severity', 'Status', 'Reported'].map((h) => (
                     <th
                       key={h}
                       className="px-5 py-3 text-left text-xs font-semibold tracking-wider uppercase"
@@ -173,8 +173,8 @@ const filtered = incidents.filter(
                       </span>
                     </td>
 
-                    {/* Full incident title */}
-                    <td className="px-5 py-4 font-medium">{inc.title}</td>
+                    {/* Incident location summary */}
+                    <td className="px-5 py-4 font-medium">{inc.location_text}</td>
 
                     {/* The Kasoa community town where this incident occurred */}
                     <td className="px-5 py-4" style={{ color: "var(--text-secondary)" }}>
