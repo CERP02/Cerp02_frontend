@@ -1,25 +1,32 @@
-const roles = [
-  { emoji: "👤", title: "Citizens", bgColor: "var(--green-dim)", description: "Any community member can report an incident in seconds, no training required.", features: ["One-tap incident reporting", "Auto GPS location share", "Photo & video upload", "Receive evacuation alerts", "Track report status"] },
-  { emoji: "🦺", title: "Responders", bgColor: "var(--orange-dim)", description: "Fire, ambulance, road safety, and disaster agencies on the ground in Kasoa.", features: ["View incidents by proximity", "Accept dispatch assignments", "Real-time status updates", "Coordinate with command center", "Offline-capable mobile view"] },
-  { emoji: "🛡", title: "Command Center", bgColor: "var(--red-dim)", description: "Kasoa admins with full oversight and broadcast authority.", features: ["Verify & classify all reports", "Community live dashboard", "Multi-agency dispatch", "Geo-fenced alert broadcasts", "Audit logs & analytics"] },
-];
-
+/**
+ * UserRoles: Profiles the three user personas within the CIRP ecosystem.
+ */
 export default function UserRoles() {
+  const roles = [
+    { emoji: "👤", title: "Citizens", bgColor: "var(--green-dim)", description: "Report local issues in seconds. No training required.", features: ["One-tap reporting", "Auto GPS sharing", "Photo/video upload", "Track status"] },
+    { emoji: "🦺", title: "Responders", bgColor: "var(--orange-dim)", description: "Utility agency field workers addressing issues on the ground.", features: ["View by proximity", "Accept tasks", "Update status", "Offline support"] },
+    { emoji: "🛡", title: "Command Center", bgColor: "var(--red-dim)", description: "Kasoa admins with oversight and agency assignment authority.", features: ["Verify reports", "Full dashboard", "Multi-agency assignment", "Audit logs"] },
+  ];
+
   return (
-    <section id="users" style={{ padding: "96px 40px", maxWidth: "1200px", margin: "0 auto" }}>
+    <section id="users" className="py-24 px-10 max-w-6xl mx-auto">
       <p className="section-label">User Roles</p>
       <h2 className="section-title">Built for everyone in the chain</h2>
-      <p className="section-sub">Three distinct portals — each tailored to what that user needs in an emergency moment.</p>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px" }}>
+      <p className="section-sub">Three distinct portals tailored to each user's specific operational needs.</p>
+      
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {roles.map((role) => (
-          <div key={role.title} style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "16px", padding: "32px" }}>
-            <div style={{ width: "52px", height: "52px", borderRadius: "14px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "22px", marginBottom: "20px", background: role.bgColor }}>{role.emoji}</div>
-            <h3 style={{ fontFamily: "Syne, sans-serif", fontSize: "20px", fontWeight: 700, marginBottom: "8px" }}>{role.title}</h3>
-            <p style={{ fontSize: "13px", color: "var(--text-secondary)", lineHeight: 1.6, marginBottom: "20px" }}>{role.description}</p>
-            <ul style={{ listStyle: "none", padding: 0, display: "flex", flexDirection: "column", gap: "8px" }}>
+          <div key={role.title} className="rounded-2xl p-8 bg-surface border border-white/5">
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-6" style={{ background: role.bgColor }}>
+              {role.emoji}
+            </div>
+            <h3 className="text-xl font-bold mb-3" style={{ fontFamily: "Syne" }}>{role.title}</h3>
+            <p className="text-sm opacity-60 mb-6 leading-relaxed">{role.description}</p>
+            <ul className="space-y-3">
               {role.features.map((f) => (
-                <li key={f} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px", color: "var(--text-secondary)" }}>
-                  <span style={{ width: "5px", height: "5px", borderRadius: "50%", background: "var(--text-muted)", flexShrink: 0 }} />{f}
+                <li key={f} className="flex items-center gap-3 text-xs opacity-70">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white/20 shrink-0" />
+                  {f}
                 </li>
               ))}
             </ul>

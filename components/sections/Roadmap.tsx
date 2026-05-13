@@ -1,26 +1,33 @@
 import { ROADMAP_PHASES } from "@/lib/data";
 
+/**
+ * Roadmap: Outlines the strategic phases of the platform rollout.
+ */
 export default function Roadmap() {
   return (
-    <section style={{ padding: "96px 40px", maxWidth: "1200px", margin: "0 auto" }}>
+    <section className="py-24 px-10 max-w-6xl mx-auto">
       <p className="section-label">Roadmap</p>
       <h2 className="section-title">Deployment Phases</h2>
-      <p className="section-sub">A practical Kasoa rollout in three phases designed for scale and resilience.</p>
-      <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+      <p className="section-sub">A practical Kasoa rollout designed for maximum community impact.</p>
+
+      <div className="space-y-5">
         {ROADMAP_PHASES.map((phase) => (
-          <div key={phase.number} style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "14px", padding: "28px 32px", display: "flex", gap: "28px", alignItems: "flex-start" }}>
-            <div style={{ width: "36px", height: "36px", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "13px", fontWeight: 700, flexShrink: 0, background: "var(--red-dim)", border: "1px solid rgba(255,59,59,0.2)", color: "var(--red)", fontFamily: "Syne, sans-serif" }}>
+          <div key={phase.number} className="bg-surface border border-white/5 rounded-2xl p-8 flex gap-8 items-start">
+            <div className="w-10 h-10 rounded-lg flex items-center justify-center font-bold shrink-0 bg-red-500/10 border border-red-500/20 text-red-500" style={{ fontFamily: "Syne" }}>
               {phase.number}
             </div>
-            <div style={{ flex: 1 }}>
-              <h3 style={{ fontFamily: "Syne, sans-serif", fontSize: "18px", fontWeight: 700, marginBottom: "8px" }}>
-                {phase.title}{" "}
-                {phase.timeline && <span style={{ fontSize: "13px", fontWeight: 400, color: "var(--text-muted)", fontFamily: "Space Grotesk, sans-serif" }}>{phase.timeline}</span>}
+            
+            <div className="flex-1">
+              <h3 className="text-xl font-bold mb-2" style={{ fontFamily: "Syne" }}>
+                {phase.title} {phase.timeline && <span className="text-sm font-normal opacity-40 ml-2">{phase.timeline}</span>}
               </h3>
-              <p style={{ fontSize: "14px", color: "var(--text-secondary)", lineHeight: 1.6, marginBottom: "12px" }}>{phase.description}</p>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+              <p className="text-sm opacity-70 mb-5 leading-relaxed">{phase.description}</p>
+              
+              <div className="flex flex-wrap gap-2">
                 {phase.tags.map((tag) => (
-                  <span key={tag} style={{ fontSize: "12px", padding: "4px 10px", borderRadius: "6px", background: "var(--surface2)", border: "1px solid var(--border)", color: "var(--text-muted)" }}>{tag}</span>
+                  <span key={tag} className="text-[10px] uppercase font-bold tracking-widest px-3 py-1.5 rounded-md bg-surface2 border border-white/5 opacity-60">
+                    {tag}
+                  </span>
                 ))}
               </div>
             </div>

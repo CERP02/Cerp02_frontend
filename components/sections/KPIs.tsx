@@ -1,27 +1,31 @@
 import { KPI_DATA } from "@/lib/data";
 
-const kpiColors = ["var(--red)", "var(--orange)", "var(--green)", "var(--blue)"];
-
+/**
+ * KPIs: Displays performance metrics for the platform rollout.
+ */
 export default function KPIs() {
+  const colors = ["var(--red)", "var(--orange)", "var(--green)", "var(--blue)"];
+
   return (
-    <div style={{ padding: "96px 40px", background: "var(--surface)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        <p className="section-label">Key Performance Indicators</p>
-        <h2 className="section-title" style={{ marginBottom: "40px" }}>Measuring what matters</h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px" }}>
+    <section className="py-24 px-10 border-y border-white/5 bg-surface">
+      <div className="max-w-6xl mx-auto">
+        <p className="section-label">Performance Indicators</p>
+        <h2 className="section-title mb-10">Measuring what matters</h2>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {KPI_DATA.map((kpi, i) => (
-            <div key={kpi.label} style={{ background: "var(--surface2)", border: "1px solid var(--border)", borderRadius: "14px", padding: "24px" }}>
-              <div style={{ fontFamily: "Syne, sans-serif", fontSize: "clamp(28px, 4vw, 36px)", fontWeight: 800, marginBottom: "4px", color: kpiColors[i] }}>
-                {kpi.value}<span style={{ fontSize: "18px" }}>{kpi.unit}</span>
+            <div key={kpi.label} className="bg-surface2 border border-white/5 rounded-2xl p-6">
+              <div className="text-3xl lg:text-4xl font-extrabold mb-1" style={{ fontFamily: "Syne", color: colors[i] }}>
+                {kpi.value}<span className="text-lg font-normal">{kpi.unit}</span>
               </div>
-              <div style={{ fontSize: "13px", color: "var(--text-muted)", marginBottom: "12px" }}>{kpi.label}</div>
-              <div style={{ fontSize: "12px", fontWeight: 500, color: kpi.up ? "var(--green)" : "var(--red)" }}>
+              <div className="text-xs opacity-50 mb-3">{kpi.label}</div>
+              <div className="text-[11px] font-bold" style={{ color: kpi.up ? "var(--green)" : "var(--red)" }}>
                 {kpi.up ? "↑" : "↓"} {kpi.trend}
               </div>
             </div>
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

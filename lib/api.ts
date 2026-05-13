@@ -1,5 +1,7 @@
+import { ReactNode } from "react";
+
 // Base URL for all API requests — reads from environment variable or falls back to localhost
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+export const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
 // getToken reads the JWT token stored in the browser's localStorage after login
 function getToken(): string | null {
@@ -20,7 +22,7 @@ async function request<T>(
   const token = getToken();
 
   // Make the HTTP request to the backend API
-  const res = await fetch(`${BASE_URL}${path}`, {
+  const res = await fetch(`${API_BASE}${path}`, {
     // Spread any caller-provided options (method, body etc.)
     ...options,
     headers: {
@@ -55,8 +57,8 @@ export interface AuthUser {
   name: string;
   // User's email address used to log in
   email: string;
-  // Role determines what the user can do — citizen, responder, or admin
-  role: "citizen" | "responder" | "admin";
+  // Role determines what the user can do — user, responder, admin, or superadmin
+  role: "user" | "responder" | "admin" | "superadmin";
   // The Kasoa town the user is based in (optional)
   region: string | null;
 }
@@ -73,7 +75,7 @@ export interface AuthResponse {
 
 // ── Auth Functions ────────────────────────────────────────────────────────────
 
-// register creates a new citizen account and stores the returned JWT token
+// register creates a new user account and stores the returned JWT token
 export async function register(payload: {
   // Full name of the new user
   name: string;
@@ -81,7 +83,7 @@ export async function register(payload: {
   email: string;
   // Plain text password — hashed on the server
   password: string;
-  // Role defaults to citizen unless specified
+  // Role defaults to user unless specified
   role?: string;
   // Optional Kasoa town the user is in
   region?: string;
@@ -117,6 +119,25 @@ export async function login(payload: {
   return data;
 }
 
+// forgotPassword initiates a password reset by sending a request to the backend
+export async function forgotPassword(email: string): Promise<{ message: string; token?: string }> {
+  return request<{ message: string; token?: string }>("/auth/forgot-password", {
+    method: "POST",
+    body: JSON.stringify({ email }),
+  });
+}
+
+// resetPassword uses a valid token to update a user's password
+export async function resetPassword(payload: {
+  token: string;
+  newPassword: string;
+}): Promise<{ message: string }> {
+  return request<{ message: string }>("/auth/reset-password", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
 // logout removes the stored token, effectively ending the user's session
 export function logout(): void {
   // Remove the token from localStorage — user must log in again to get a new one
@@ -129,14 +150,37 @@ export async function getMe(): Promise<{ user: AuthUser }> {
   return request<{ user: AuthUser }>("/auth/me");
 }
 
+// getUsers fetches all platform users for superadmin management
+export async function getUsers(): Promise<{ users: AuthUser[] }> {
+  return request<{ users: AuthUser[] }>("/users");
+}
+
+// updateUser updates a user's role or region
+export async function updateUser(
+  id: string,
+  payload: { role?: string; region?: string }
+): Promise<{ message: string; user: AuthUser }> {
+  return request(`/users/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(payload),
+  });
+}
+
+// deleteUser removes a user account from the system
+export async function deleteUser(id: string): Promise<{ message: string }> {
+  return request(`/users/${id}`, {
+    method: "DELETE",
+  });
+}
+
 // ── Incident Types ────────────────────────────────────────────────────────────
 
-// Incident represents a single emergency report as returned by the backend API
+// Incident represents a single community issue report as returned by the backend API
 export interface Incident {
   // Unique database ID for this incident
   id: string;
-  // Category of the emergency
-  type: "flood" | "fire" | "accident";
+  // Category of the issue (matching IssueType in lib/types.ts)
+  type: string;
   // Free-text description of what happened
   description: string;
   // Address or landmark of the incident
@@ -148,9 +192,9 @@ export interface Incident {
   // Which Kasoa community town this occurred in
   region: string;
   // How critical the incident is
-  severity: "low" | "moderate" | "critical";
+  severity: string;
   // Current stage in the response workflow
-  status: "new" | "dispatched" | "resolved";
+  status: string;
   // Agency assigned to respond — null if not yet dispatched
   assigned_agency: string | null;
   // ID of the user who reported this incident

@@ -1,218 +1,83 @@
 "use client";
 
-// Import React hooks for managing state and side effects
 import { useEffect, useRef, useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 
-// useCountUp animates a number from 0 to a target value over a given duration
-// It only starts counting when the "start" flag becomes true
+/**
+ * useCountUp: Animates numeric values from 0 to target.
+ */
 function useCountUp(target: number, duration = 1800, start = false) {
-  // value holds the current animated number shown on screen
   const [value, setValue] = useState(0);
-
   useEffect(() => {
-    // Do nothing until the start flag is triggered
     if (!start) return;
-    // Record the time the animation started
     const startTime = performance.now();
-
-    // tick is called on every animation frame to update the displayed value
     const tick = (now: number) => {
-      // Calculate progress as a fraction between 0 and 1
       const p = Math.min((now - startTime) / duration, 1);
-      // Apply an ease-out cubic curve so the number slows down near the end
       const ease = 1 - Math.pow(1 - p, 3);
-      // Update the displayed value rounded to the nearest integer
       setValue(Math.round(ease * target));
-      // Continue animating until progress reaches 1 (100%)
       if (p < 1) requestAnimationFrame(tick);
     };
-
-    // Start the animation loop
     requestAnimationFrame(tick);
   }, [target, duration, start]);
-
-  // Return the current animated value for display
   return value;
 }
 
-// Hero is the full-height landing section at the top of the home page
-// It shows the platform tagline, CTA buttons, and animated stat cards
+/**
+ * Hero: Impactful landing section with animated metrics.
+ */
 export default function Hero() {
-  // counting becomes true when the hero section enters the viewport
+  const { user } = useAuth();
   const [counting, setCounting] = useState(false);
-  // ref is attached to the section element so we can observe when it is visible
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Create an IntersectionObserver to watch when the section enters the viewport
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        // When 30% of the section is visible, start the counter animations
-        if (entry.isIntersecting) {
-          setCounting(true);
-          // Stop observing once triggered — we only want to animate once
-          obs.disconnect();
-        }
-      },
-      // Trigger when at least 30% of the element is visible
-      { threshold: 0.3 }
-    );
-
-    // Attach the observer to the section element
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setCounting(true); obs.disconnect(); }
+    }, { threshold: 0.3 });
     if (ref.current) obs.observe(ref.current);
-
-    // Clean up the observer when the component unmounts
     return () => obs.disconnect();
   }, []);
 
-  // Animate each stat counter — values reflect Kasoa community scale
-  // Active incidents currently being tracked across Kasoa
-  const c1 = useCountUp(47, 1800, counting);
-  // Number of Kasoa towns covered by the platform
-  const c2 = useCountUp(10, 1400, counting);
-  // Average minutes from report submission to responder dispatch
-  const c3 = useCountUp(12, 1600, counting);
-
-  // stats defines the three metric cards shown on the right side of the hero
   const stats = [
-    // Red stat — number of active incidents currently being tracked
-    { val: c1, label: "Active Incidents", color: "var(--red)" },
-    // Blue stat — number of Kasoa community towns covered
-    { val: c2, label: "Towns Covered", color: "var(--blue)" },
-    // Orange stat — average response time in minutes
-    { val: c3, label: "Avg. Response (min)", color: "var(--orange)" },
+    { val: useCountUp(63, 1800, counting), label: "Active Issues", color: "var(--red)" },
+    { val: useCountUp(10, 1400, counting), label: "Towns Covered", color: "var(--blue)" },
+    { val: useCountUp(7, 1600, counting), label: "Partner Agencies", color: "var(--orange)" },
   ];
 
   return (
-    // Full-height section with relative positioning for the background layers
-    <section
-      ref={ref}
-      className="relative min-h-screen flex items-center overflow-hidden px-10 pt-28 pb-20"
-    >
-      {/* ── Grid Background ── */}
-      {/* Subtle red grid pattern layered behind all content */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,59,59,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,59,59,0.03) 1px, transparent 1px)",
-          // Grid cell size — 60px squares
-          backgroundSize: "60px 60px",
-        }}
-      />
+    <section ref={ref} className="relative min-h-screen flex items-center overflow-hidden px-10 pt-28 pb-20">
+      {/* Background Decorative Layers */}
+      <div className="absolute inset-0 pointer-events-none opacity-20" style={{ backgroundImage: "linear-gradient(var(--red) 1px, transparent 1px), linear-gradient(90deg, var(--red) 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
+      <div className="absolute top-[-200px] left-1/2 -translate-x-1/2 w-[800px] h-[800px] pointer-events-none" style={{ background: "radial-gradient(ellipse, rgba(255,59,59,0.1) 0%, transparent 70%)" }} />
 
-      {/* ── Radial Glow ── */}
-      {/* Soft red glow centered at the top of the hero to draw the eye */}
-      <div
-        className="absolute pointer-events-none"
-        style={{
-          top: "-200px",
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: "800px",
-          height: "800px",
-          background:
-            "radial-gradient(ellipse, rgba(255,59,59,0.08) 0%, transparent 70%)",
-        }}
-      />
-
-      {/* ── Main Content ── */}
       <div className="relative max-w-2xl">
-        {/* ── Live Badge ── */}
-        {/* Pill badge with a pulsing dot to indicate real-time activity */}
-        <div
-          className="inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-semibold tracking-widest uppercase mb-8"
-          style={{
-            background: "var(--red-dim)",
-            border: "1px solid rgba(255,59,59,0.25)",
-            color: "#ff8080",
-          }}
-        >
-          {/* Animated pulsing dot indicating the system is live */}
-          <span
-            className="pulse-dot w-1.5 h-1.5 rounded-full"
-            style={{ background: "var(--red)" }}
-          />
-          Live Community Response System
+        <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest mb-8 border border-red-500/30 bg-red-500/10 text-red-400">
+          <span className="pulse-dot w-2 h-2 rounded-full bg-red-500" />
+          Live Community Issue Tracker
         </div>
 
-        {/* ── Main Heading ── */}
-        {/* Large display heading emphasising the urgency of emergency response */}
-        <h1
-          className="font-extrabold leading-none mb-6"
-          style={{
-            fontFamily: "Syne, sans-serif",
-            // Responsive font size — 48px minimum, scales up to 80px
-            fontSize: "clamp(48px,7vw,80px)",
-            letterSpacing: "-0.02em",
-          }}
-        >
-          When{" "}
-          {/* "seconds" is highlighted in red to emphasise urgency */}
-          <em className="not-italic" style={{ color: "var(--red)" }}>
-            seconds
-          </em>
-          <br />
-          define survival
+        <h1 className="font-extrabold leading-[0.95] mb-6 tracking-tight" style={{ fontFamily: "Syne", fontSize: "clamp(48px, 8vw, 90px)" }}>
+          Your <span className="text-red-500 italic">community</span><br />your voice
         </h1>
 
-        {/* ── Subheading ── */}
-        {/* Brief explanation of what CERP does and who it serves */}
-        <p
-          className="text-lg mb-10 max-w-xl"
-          style={{ color: "var(--text-secondary)", lineHeight: "1.7" }}
-        >
-          The Community Emergency Reporting Platform connects Kasoa residents
-          directly to first responders — faster flood warnings, fire dispatch,
-          and accident response across all 10 Kasoa community towns.
+        <p className="text-lg md:text-xl opacity-70 mb-10 max-w-xl leading-relaxed">
+          CIRP connects Kasoa residents directly to utility agencies. Report traffic, burst pipes, and infrastructure faults across all 10 Kasoa towns.
         </p>
 
-        {/* ── CTA Buttons ── */}
-        <div className="flex gap-3 flex-wrap">
-          {/* Primary CTA — takes citizen to the report form */}
-          <a href="/report">
-            <button className="btn-primary text-base px-7 py-3.5 rounded-xl">
-              Report an Incident
-            </button>
-          </a>
-
-          {/* Secondary CTA — takes user to the live dashboard */}
-          <a href="/dashboard">
-            <button className="btn-ghost text-base px-7 py-3.5 rounded-xl">
-              View Live Map
-            </button>
-          </a>
+        <div className="flex gap-4 flex-wrap">
+          <a href="/report" className="btn-primary px-8 py-4 text-lg">Report an Issue</a>
+          {user && (user.role === "admin" || user.role === "superadmin" || user.role === "responder") && (
+            <a href="/dashboard" className="btn-ghost px-8 py-4 text-lg">View Dashboard</a>
+          )}
         </div>
       </div>
 
-      {/* ── Stat Cards ── */}
-      {/* Positioned absolutely on the right side — hidden on small screens */}
-      <div className="absolute right-10 top-1/2 -translate-y-1/2 flex-col gap-4 hidden lg:flex">
-        {/* Render one card per stat */}
+      {/* Animated Metric Cards (Visible on LG+) */}
+      <div className="absolute right-10 top-1/2 -translate-y-1/2 hidden lg:flex flex-col gap-4">
         {stats.map(({ val, label, color }) => (
-          <div
-            key={label}
-            className="rounded-xl px-6 py-5 min-w-[180px]"
-            style={{
-              background: "var(--surface)",
-              border: "1px solid var(--border)",
-            }}
-          >
-            {/* The animated number value in the stat's accent color */}
-            <div
-              className="text-3xl font-extrabold mb-1"
-              style={{ fontFamily: "Syne, sans-serif", color }}
-            >
-              {val}
-            </div>
-
-            {/* The stat label in muted uppercase text */}
-            <div
-              className="text-xs tracking-wider uppercase"
-              style={{ color: "var(--text-muted)" }}
-            >
-              {label}
-            </div>
+          <div key={label} className="rounded-2xl p-6 min-w-[200px] border border-white/5 bg-surface backdrop-blur-sm">
+            <div className="text-4xl font-extrabold mb-1" style={{ fontFamily: "Syne", color }}>{val}</div>
+            <div className="text-[10px] font-bold tracking-widest uppercase opacity-50">{label}</div>
           </div>
         ))}
       </div>

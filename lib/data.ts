@@ -1,175 +1,51 @@
-// Import the Incident and Agency types from the local types file
-import type { Incident, Agency } from "./types";
+import type { Agency } from "./types";
 
-// INCIDENT_CATEGORIES defines the three emergency types the platform handles
-// Each category has a type key, display label, emoji icon, color codes, responsible agency, and description
-export const INCIDENT_CATEGORIES = [
-  {
-    // Flood category — triggers Disaster Management Agency dispatch
-    type: "flood" as const,
-    // Label shown to the user in the UI
-    label: "Flood",
-    // Emoji displayed on the incident type button
-    emoji: "🌊",
-    // Primary color used for flood incident markers and borders
-    color: "#2e86ff",
-    // Semi-transparent version of the color used for backgrounds
-    dimColor: "rgba(46,134,255,0.12)",
-    // The agency that gets dispatched when a flood is reported
-    agency: "Disaster Management Agency (NADMO)",
-    // Short description shown on the incident type card
-    description:
-      "Report rising water levels, flash floods, and drainage failures. GPS pinpointing helps responders reach Kasoa communities fast.",
-  },
-  {
-    // Fire category — triggers Ghana Fire Service dispatch
-    type: "fire" as const,
-    // Label shown in the UI
-    label: "Fire",
-    // Emoji displayed on the incident type button
-    emoji: "🔥",
-    // Primary color used for fire incident markers and borders
-    color: "#ff3b3b",
-    // Semi-transparent background version of red
-    dimColor: "rgba(255,59,59,0.12)",
-    // The agency that handles fire incidents in Kasoa
-    agency: "Ghana Fire Service",
-    // Short description shown on the incident type card
-    description:
-      "Urban blazes and wildfires — every minute matters. Automatic dispatch to the nearest fire service unit in the Kasoa area.",
-  },
-  {
-    // Road Accident category — triggers Road Safety and Ambulance dispatch
-    type: "accident" as const,
-    // Label shown in the UI
-    label: "Road Accident",
-    // Emoji displayed on the incident type button
-    emoji: "🚗",
-    // Primary color used for accident markers and borders
-    color: "#ff8c00",
-    // Semi-transparent background version of orange
-    dimColor: "rgba(255,140,0,0.12)",
-    // Both road safety and ambulance are dispatched for accidents
-    agency: "Road Safety Authority + Ambulance",
-    // Short description shown on the incident type card
-    description:
-      "Vehicle collisions, road blockages, and traffic emergencies. Dual dispatch ensures both road safety and medical response in Kasoa.",
-  },
+/**
+ * CIRP Static Data Store: Defines categories, towns, agencies, and roadmap.
+ */
+
+export const ISSUE_CATEGORIES = [
+  { type: "traffic_congestion" as const, label: "Traffic Congestion", emoji: "🚦", color: "#e74c3c", dimColor: "rgba(231,76,60,0.1)", agency: "Police Service", description: "Report jams, blocked intersections, and roads needing police direction." },
+  { type: "burst_water_pipe" as const, label: "Burst Water Pipe", emoji: "💧", color: "#3498db", dimColor: "rgba(52,152,219,0.1)", agency: "GWCL", description: "Report leaking pipes, low pressure, and supply disruptions." },
+  { type: "electrical_fault" as const, label: "Electrical Fault", emoji: "⚡", color: "#f39c12", dimColor: "rgba(243,156,18,0.1)", agency: "ECG", description: "Report exposed wires, fallen lines, and power outages." },
+  { type: "weak_bridge" as const, label: "Weak Bridge", emoji: "🌉", color: "#8e44ad", dimColor: "rgba(142,68,173,0.1)", agency: "GHA", description: "Report cracked or structurally weak bridges and footbridges." },
+  { type: "pothole_bad_road" as const, label: "Pothole / Bad Road", emoji: "🕳️", color: "#d35400", dimColor: "rgba(211,84,0,0.1)", agency: "GHA", description: "Report potholes and crumbling road surfaces needing repair." },
+  { type: "illegal_dumping" as const, label: "Illegal Dumping", emoji: "🗑️", color: "#27ae60", dimColor: "rgba(39,174,96,0.1)", agency: "Zoomlion", description: "Report illegal waste dumping and unsanitary conditions." },
+  { type: "streetlight_outage" as const, label: "Streetlight Outage", emoji: "🔦", color: "#2c3e50", dimColor: "rgba(44,62,80,0.1)", agency: "ECG", description: "Report non-functional street lights affecting night safety." },
+  { type: "open_manhole" as const, label: "Open Manhole", emoji: "🚧", color: "#16a085", dimColor: "rgba(22,160,133,0.1)", agency: "HSD", description: "Report uncovered manholes and blocked gutters." },
+  { type: "noise_complaint" as const, label: "Noise Complaint", emoji: "📢", color: "#c0392b", dimColor: "rgba(192,57,43,0.1)", agency: "Police Service", description: "Report excessive noise from construction or events." },
+  { type: "other" as const, label: "Other Issue", emoji: "📋", color: "#7f8c8d", dimColor: "rgba(127,140,141,0.1)", agency: "Municipal Assembly", description: "Report any other community issues not listed above." },
 ];
 
-// KASOA_TOWNS replaces the old national REGIONS list
-// These are the specific towns and communities within the Kasoa area that CERP covers
-export const KASOA_TOWNS = [
-  // The main Kasoa town centre
-  "Kasoa Central",
-  // Akweley area within the Kasoa community
-  "Akweley",
-  // Opeikuma town within Greater Kasoa
-  "Opeikuma",
-  // Millennium City housing development area
-  "Millennium City",
-  // Lamptey Mills community area
-  "Lamptey Mills",
-  // Ofaakor town near Kasoa
-  "Ofaakor",
-  // Gomoa Pomadze community
-  "Gomoa Pomadze",
-  // Bawjiase town within the Kasoa catchment
-  "Bawjiase",
-  // Nyanyano fishing community near Kasoa
-  "Nyanyano",
-  // Awutu Bereku — district capital near Kasoa
-  "Awutu Bereku",
+export const KASOA_TOWNS = ["Kasoa Central", "Akweley", "Opeikuma", "Millennium City", "Lamptey Mills", "Ofaakor", "Gomoa Pomadze", "Bawjiase", "Nyanyano", "Awutu Bereku"];
+
+export const COMMUNITY_AGENCIES: Agency[] = [
+  { id: "A1", name: "Ghana Police Service", type: "police", coverageArea: "Kasoa" },
+  { id: "A2", name: "Ghana Water Company Ltd", type: "water", coverageArea: "Kasoa" },
+  { id: "A3", name: "Electricity Company of Ghana", type: "electricity", coverageArea: "Kasoa" },
+  { id: "A4", name: "Ghana Highway Authority", type: "roads", coverageArea: "Kasoa" },
+  { id: "A5", name: "Zoomlion Ghana Ltd", type: "sanitation", coverageArea: "Kasoa" },
+  { id: "A6", name: "Hydrological Services Dept", type: "drainage", coverageArea: "Kasoa" },
+  { id: "A7", name: "Municipal Assembly", type: "general", coverageArea: "Kasoa" },
 ];
 
-// MOCK_INCIDENTS is sample data used when the real backend is not yet connected
-// In production these are loaded from the PostgreSQL database via the API
-
-
-// MOCK_AGENCIES lists the emergency response agencies that serve the Kasoa community
-export const MOCK_AGENCIES: Agency[] = [
-  // Ghana Fire Service handles all fire-related incidents
-  { id: "A1", name: "Ghana Fire Service", type: "fire", coverageArea: "Kasoa Community" },
-  // NADMO handles flood and natural disaster incidents
-  { id: "A2", name: "NADMO", type: "disaster", coverageArea: "Kasoa Community" },
-  // Road Safety Authority handles traffic and road accident incidents
-  { id: "A3", name: "Road Safety Authority", type: "road", coverageArea: "Kasoa Community" },
-  // National Ambulance Service handles medical emergencies alongside accidents
-  { id: "A4", name: "National Ambulance Service", type: "medical", coverageArea: "Kasoa Community" },
-];
-
-// WORKFLOW_STEPS describes the 5-stage process from report submission to resolution
 export const WORKFLOW_STEPS = [
-  // Step 1 — the citizen submits a report via the platform
-  { number: 1, title: "Report Submitted", desc: "Community member files incident with GPS + media" },
-  // Step 2 — an admin reviews and verifies the report is genuine
-  { number: 2, title: "Admin Review", desc: "Command center verifies and classifies severity" },
-  // Step 3 — the system assigns the appropriate agency based on incident type
-  { number: 3, title: "Agency Assigned", desc: "Nearest agency auto-assigned by incident type" },
-  // Step 4 — the assigned responder accepts and travels to the scene
-  { number: 4, title: "En Route", desc: "Responder accepts dispatch and updates status" },
-  // Step 5 — the incident is marked resolved and logged with a timestamp
-  { number: 5, title: "Incident Resolved", desc: "Closure logged with response time recorded" },
+  { number: 1, title: "Reported", desc: "Citizen files issue with GPS + photos" },
+  { number: 2, title: "Verified", desc: "Admin confirms and classifies urgency" },
+  { number: 3, title: "Assigned", desc: "Correct agency dispatched for repair" },
+  { number: 4, title: "Working", desc: "Agency addresses the issue on-site" },
+  { number: 5, title: "Resolved", desc: "Resolution logged and confirmed" },
 ];
 
-// KPI_DATA holds the key performance metrics displayed on the platform dashboard
 export const KPI_DATA = [
-  // Average time between a citizen submitting a report and an agency being dispatched
-  { value: "4.2", unit: "min", label: "Avg. Report to Dispatch", trend: "+18% faster", up: true },
-  // Average time for a responder to arrive at the scene after dispatch
-  { value: "11.7", unit: "min", label: "Avg. Response Time", trend: "+9% improvement", up: true },
-  // Percentage of submitted reports that are genuine vs false alarms
-  { value: "89", unit: "%", label: "Verified vs False Reports", trend: "Accuracy rising", up: true },
-  // Percentage of time the platform is operational and accessible
-  { value: "99.8", unit: "%", label: "System Uptime", trend: "Within SLA", up: true },
+  { value: "3.8", unit: "hrs", label: "Avg. Assignment Time", trend: "+22% faster", up: true },
+  { value: "2.1", unit: "days", label: "Avg. Resolution Time", trend: "+15% better", up: true },
+  { value: "91", unit: "%", label: "Verified Reports", trend: "High accuracy", up: true },
+  { value: "99.8", unit: "%", label: "System Uptime", trend: "Stable", up: true },
 ];
 
-// ROADMAP_PHASES outlines the three deployment phases for the CERP platform
 export const ROADMAP_PHASES = [
-  {
-    // Phase number displayed as a badge
-    number: "01",
-    // Phase title shown as the card heading
-    title: "Phase 1 — Core Launch",
-    // Estimated timeline for completing this phase
-    timeline: "(3–6 months)",
-    // Description of what this phase delivers
-    description:
-      "Stand up the essential reporting and dispatch infrastructure for community deployment in Kasoa.",
-    // List of features to be delivered in this phase
-    tags: [
-      "Citizen web reporting",
-      "Admin dashboard",
-      "Community live map",
-      "Basic dispatch tracking",
-      "SMS alert integration",
-    ],
-  },
-  {
-    number: "02",
-    title: "Phase 2 — Mobile & Intelligence",
-    timeline: "",
-    description:
-      "Dedicated native apps and smarter dispatch logic based on geolocation and agency capacity within Kasoa.",
-    tags: [
-      "iOS & Android apps",
-      "Auto nearest-agency assignment",
-      "Performance analytics dashboard",
-      "Offline responder mode",
-    ],
-  },
-  {
-    number: "03",
-    title: "Phase 3 — AI & Predictive Systems",
-    timeline: "",
-    description:
-      "Machine learning and local data feeds to anticipate emergencies in the Kasoa community before they escalate.",
-    tags: [
-      "AI duplicate detection",
-      "Predictive flood risk modeling",
-      "Fire risk forecasting",
-      "Weather API integration",
-      "Traffic system integration",
-    ],
-  },
+  { number: "01", title: "Core Launch", timeline: "Q1-Q2 2026", description: "Deploy basic reporting and agency assignment infrastructure.", tags: ["Web Reporting", "Admin Dashboard", "Live Map", "SMS Routing"] },
+  { number: "02", title: "Mobile & AI", timeline: "Q3 2026", description: "Native apps and automated smart routing based on workload.", tags: ["iOS/Android Apps", "Auto Assignment", "Analytics", "Offline Mode"] },
+  { number: "03", title: "Predictive", timeline: "2027", description: "Predictive maintenance and AI-driven issue prioritization.", tags: ["AI Detection", "Predictive Alerts", "Smart Scoring", "Citizen Feedback"] },
 ];
