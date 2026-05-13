@@ -9,7 +9,7 @@ import { AuthProvider } from "@/context/AuthContext";
 // metadata is exported so Next.js can inject the correct <title> and <meta> tags
 export const metadata: Metadata = {
   // Browser tab title and SEO title for the community issue reporting platform
-  title: "CERP — Community Issue Reporting Platform",
+  title: "CIRP — Community Issue Reporting Platform",
   // Meta description used by search engines and social sharing previews
   description:
     "Report community issues in Kasoa — traffic congestion, burst pipes, electrical faults, bad roads and more. Connect citizens to the right government agencies fast.",
