@@ -44,7 +44,7 @@ export default function AdminLoginPage() {
         // Remove the newly issued token to prevent unauthorized session persistence
         localStorage.removeItem("cirp_token");
         // Set a descriptive error message explaining the access restriction
-        setError("Access denied. This portal is strictly for CIRP administrators only.");
+        setError("Access denied. This portal is strictly for StreetPulse administrators only.");
         // Terminate the login flow
         return;
       }
@@ -90,7 +90,7 @@ export default function AdminLoginPage() {
             </div>
             {/* Primary CIRP wordmark with brand emphasis on the platform initial */}
             <h1 className="text-2xl font-extrabold mb-1" style={{ fontFamily: "Syne, sans-serif" }}>
-              CIR<span style={{ color: "var(--red)" }}>P</span>
+              <span style={{ color: "#ffffff" }}>Street</span><span style={{ color: "var(--red)" }}>Pulse</span>
             </h1>
             {/* Red label explicitly marking this route as the administrative portal */}
             <p className="text-sm font-semibold" style={{ color: "var(--red)" }}>Admin Portal</p>
@@ -103,7 +103,7 @@ export default function AdminLoginPage() {
             className="rounded-xl px-4 py-3 mb-6 text-xs text-center"
             style={{ background: "var(--red-dim)", border: "1px solid rgba(255,59,59,0.25)", color: "#ff8080" }}
           >
-            🔒 Restricted access — authorized CIRP personnel only
+            🔒 Restricted access — authorized StreetPulse personnel only
           </div>
 
           {/* Form input area for administrative credentials */}

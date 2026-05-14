@@ -47,7 +47,7 @@ export default function CreateUserPage() {
         <div className="w-full max-w-lg">
           <div className="mb-10 text-center">
             <h1 className="text-3xl font-extrabold tracking-tight" style={{ fontFamily: "Syne" }}>Register New User</h1>
-            <p className="text-white/40 text-sm">Create a new administrative account for CIRP.</p>
+            <p className="text-white/40 text-sm">Create a new administrative account for StreetPulse.</p>
           </div>
 
           <form onSubmit={handleSubmit} className="bg-surface border border-white/5 p-10 rounded-3xl space-y-6">

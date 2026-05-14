@@ -44,7 +44,7 @@ export default function SuperadminLoginPage() {
         // Remove the newly issued token to prevent unauthorized session persistence
         localStorage.removeItem("cerp_token");
         // Set a descriptive error message explaining the access restriction
-        setError("Access denied. This portal is strictly for CIRP superadministrators only.");
+        setError("Access denied. This portal is strictly for StreetPulse superadministrators only.");
         // Terminate the login flow
         return;
       }
@@ -90,7 +90,7 @@ export default function SuperadminLoginPage() {
             </div>
             {/* Primary CIRP wordmark with brand emphasis on the platform initial */}
             <h1 className="text-2xl font-extrabold mb-1" style={{ fontFamily: "Syne, sans-serif" }}>
-              CIR<span style={{ color: "var(--red)" }}>P</span>
+              <span style={{ color: "#ffffff" }}>Street</span><span style={{ color: "var(--red)" }}>Pulse</span>
             </h1>
             {/* Red label explicitly marking this route as the superadmin portal */}
             <p className="text-sm font-semibold" style={{ color: "var(--red)" }}>Superadmin Portal</p>
@@ -103,7 +103,7 @@ export default function SuperadminLoginPage() {
             className="rounded-xl px-4 py-3 mb-6 text-xs text-center"
             style={{ background: "var(--red-dim)", border: "1px solid rgba(255,59,59,0.25)", color: "#ff8080" }}
           >
-            👑 Restricted access — authorized CIRP superadministrators only
+            👑 Restricted access — authorized StreetPulse superadministrators only
           </div>
 
           {/* Form input area for superadmin credentials */}

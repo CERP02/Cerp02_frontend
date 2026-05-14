@@ -184,7 +184,7 @@ export default function AdminPage() {
           <div>
             {/* Small uppercase label identifying the current portal context */}
             <p className="text-xs font-semibold tracking-widest uppercase mb-2" style={{ color: "var(--red)" }}>
-              CIRP Admin Portal
+              StreetPulse Admin Portal
             </p>
             {/* Main heading for the command center with brand typography */}
             <h1 className="font-extrabold" style={{ fontFamily: "Syne, sans-serif", fontSize: "clamp(32px,4vw,48px)", letterSpacing: "-0.02em", lineHeight: 1.1 }}>

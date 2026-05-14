@@ -14,7 +14,7 @@ import type { Metadata } from "next";
 // Set the browser tab title and description specifically for the CIRP About page
 export const metadata: Metadata = {
   // Page-specific title shown in the browser tab for brand recognition
-  title: "About — CIRP",
+  title: "About — StreetPulse",
   // Meta description for search engine indexing and social sharing
   description: "Learn about the Community Issue Reporting Platform serving the Kasoa community.",
 };
@@ -35,7 +35,7 @@ export default function AboutPage() {
           className="text-xs font-semibold tracking-widest uppercase mb-3"
           style={{ color: "var(--red)" }}
         >
-          About CIRP
+          About StreetPulse
         </p>
 
         {/* Main page heading with responsive typography for modern display */}
@@ -60,7 +60,7 @@ export default function AboutPage() {
           className="text-base max-w-2xl mb-6"
           style={{ color: "var(--text-secondary)", lineHeight: "1.8" }}
         >
-          The Community Issue Reporting Platform (CIRP) is a digital civic engagement
+          StreetPulse is a digital civic engagement
           system designed specifically for the Kasoa community and its surrounding towns.
           It connects citizens directly to government and utility agencies —
           reducing the time between a community issue being spotted and it being resolved.
@@ -72,7 +72,7 @@ export default function AboutPage() {
           style={{ color: "var(--text-secondary)", lineHeight: "1.8" }}
         >
           Traditional issue reporting relies on physical visits or phone calls that can be slow
-          or unrecorded. CIRP replaces that with instant GPS-tagged reports, photo uploads,
+          or unrecorded. StreetPulse replaces that with instant GPS-tagged reports, photo uploads,
           and automatic assignment to the right agency — such as GWCL, ECG, or the Police —
           ensuring full accountability and faster response.
         </p>

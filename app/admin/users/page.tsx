@@ -122,7 +122,7 @@ export default function UserManagementPage() {
           <div>
             <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-500 mb-2">Administrative Console</p>
             <h1 className="text-4xl lg:text-5xl font-extrabold tracking-tight mb-2" style={{ fontFamily: "Syne" }}>User Management</h1>
-            <p className="text-white/40 text-sm max-w-md">Oversee platform roles, region assignments, and security across the Kasoa CIRP network.</p>
+            <p className="text-white/40 text-sm max-w-md">Oversee platform roles, region assignments, and security across the Kasoa StreetPulse network.</p>
           </div>
           <div className="flex gap-4 w-full lg:w-auto">
             <input

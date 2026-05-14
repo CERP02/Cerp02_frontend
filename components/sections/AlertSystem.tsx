@@ -10,7 +10,7 @@ export default function AlertSystem() {
 
   const channels = [
     { emoji: "📱", name: "SMS Broadcast", desc: "Reaches all subscribers in Kasoa area" },
-    { emoji: "🔔", name: "Push Notification", desc: "Instant alerts to CIRP mobile app users" },
+    { emoji: "🔔", name: "Push Notification", desc: "Instant alerts to StreetPulse mobile app users" },
     { emoji: "🌐", name: "Web Banner", desc: "Prominent banner shown on the portal" },
   ];
 

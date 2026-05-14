@@ -10,7 +10,7 @@ export default function IncidentTypes() {
       <p className="section-label">Issue Categories</p>
       <h2 className="section-title">Community issues<br />we handle</h2>
       <p className="section-sub">
-        CIRP covers the most common community issues in Kasoa. Every report is automatically routed to the right government agency.
+        StreetPulse covers the most common community issues in Kasoa. Every report is automatically routed to the right government agency.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">

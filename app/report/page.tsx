@@ -2,7 +2,7 @@ import ReportPageContent from "@/components/ReportPageContent";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Report an Issue — CIRP",
+  title: "Report an Issue — StreetPulse",
   description: "Submit a community maintenance or utility issue report to the Kasoa command center.",
 };
 

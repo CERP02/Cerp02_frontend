@@ -130,7 +130,7 @@ export default function CitizenLoginPage() {
             </div>
             {/* High-visibility CIRP branding */}
             <h1 className="text-2xl font-extrabold mb-1" style={{ fontFamily: "Syne, sans-serif" }}>
-              CIR<span style={{ color: "var(--red)" }}>P</span>
+              <span style={{ color: "#ffffff" }}>Street</span><span style={{ color: "var(--red)" }}>Pulse</span>
             </h1>
             {/* Descriptive platform name suffix */}
             <p className="text-sm" style={{ color: "var(--text-muted)" }}>Community Issue Reporting Platform</p>

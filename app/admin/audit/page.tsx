@@ -58,7 +58,7 @@ export default function AuditTrailPage() {
           <div>
             <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-500 mb-2">Security & Compliance</p>
             <h1 className="text-4xl lg:text-5xl font-extrabold tracking-tight" style={{ fontFamily: "Syne" }}>Audit Trail</h1>
-            <p className="text-white/40 text-sm mt-2">Comprehensive history of administrative actions on the CIRP platform.</p>
+            <p className="text-white/40 text-sm mt-2">Comprehensive history of administrative actions on the StreetPulse platform.</p>
           </div>
         </header>
 

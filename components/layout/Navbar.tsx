@@ -47,7 +47,7 @@ export default function Navbar() {
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
           </svg>
         </div>
-        <span className="font-extrabold tracking-widest text-white" style={{ fontFamily: "Syne" }}>CIRP</span>
+        <span className="font-extrabold tracking-tight text-white" style={{ fontFamily: "Syne" }}><span style={{ color: "#ffffff" }}>Street</span><span style={{ color: "var(--red)" }}>Pulse</span></span>
       </Link>
 
       {/* Desktop Navigation */}

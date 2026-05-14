@@ -61,7 +61,7 @@ export default function Hero() {
         </h1>
 
         <p className="text-lg md:text-xl opacity-70 mb-10 max-w-xl leading-relaxed">
-          CIRP connects Kasoa residents directly to utility agencies. Report traffic, burst pipes, and infrastructure faults across all 10 Kasoa towns.
+          StreetPulse connects Kasoa residents directly to utility agencies. Report traffic, burst pipes, and infrastructure faults across all 10 Kasoa towns.
         </p>
 
         <div className="flex gap-4 flex-wrap">

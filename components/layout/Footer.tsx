@@ -11,7 +11,7 @@ export default function Footer() {
   const { user } = useAuth();
 
   const links = [
-    ["About CIRP", "/about"],
+    ["About StreetPulse", "/about"],
     ...(user && user.role !== "user" ? [] : [["Report Issue", "/report"]]),
     ...(user && (user.role === "admin" || user.role === "superadmin" || user.role === "responder") ? [["Dashboard", "/dashboard"]] : []),
     ["Notifications", "/alerts"],
@@ -21,8 +21,8 @@ export default function Footer() {
 
   return (
     <footer className="py-16 px-10 text-center bg-surface border-t border-white/5">
-      <div className="text-2xl font-extrabold mb-2 tracking-widest" style={{ fontFamily: "Syne" }}>
-        CIR<span className="text-red-500">P</span>
+      <div className="text-2xl font-extrabold mb-2 tracking-tight" style={{ fontFamily: "Syne" }}>
+        <span style={{ color: "#ffffff" }}>Street</span><span className="text-red-500">Pulse</span>
       </div>
       
       <p className="text-xs opacity-40 mb-1 font-bold uppercase tracking-widest">Community Issue Reporting Platform</p>
@@ -39,7 +39,7 @@ export default function Footer() {
       </ul>
 
       <p className="text-[10px] opacity-20 font-bold uppercase tracking-widest">
-        © {new Date().getFullYear()} CIRP. Built for the community.
+        © {new Date().getFullYear()} StreetPulse. Built for the community.
       </p>
     </footer>
   );
