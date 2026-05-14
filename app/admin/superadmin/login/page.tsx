@@ -53,7 +53,7 @@ export default function SuperadminLoginPage() {
       authLogin(data.user);
 
       // Redirect the authenticated superadmin to the platform command center dashboard
-      router.push("/admin");
+      router.push("/admin/dashboard");
     } catch (err: unknown) {
       // Handle potential API errors by displaying a helpful message to the user
       if (err instanceof Error) {
